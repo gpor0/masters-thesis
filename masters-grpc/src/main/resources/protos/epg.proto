@@ -1,0 +1,39 @@
+syntax = "proto3";
+option java_package = "grpc";
+
+service Epg {
+    rpc getEpg (EpgRequest) returns (EpgResponse) {
+    };
+}
+
+service EpgStream {
+    rpc getEpgStream (EpgRequest) returns (stream EpgResponse) {
+    };
+}
+
+message EpgRequest {
+    int32 size = 1;
+}
+
+message EpgResponse {
+    repeated EpgItem items = 1;
+}
+
+message EpgItem {
+    string idEpg = 1;
+    string epgTitle = 2;
+    string originalTitle = 3;
+    string shortDescription = 4;
+    string longDescription = 5;
+    string poster = 6;
+    string imdbId = 7;
+    double imdbRating = 8;
+    string director = 9;
+    repeated string writers = 10;
+    repeated string stars = 11;
+    int32 year = 12;
+    string genre = 13;
+    string ageRestriction = 14;
+    string playingStart = 15;
+    string playingEnd = 16;
+}

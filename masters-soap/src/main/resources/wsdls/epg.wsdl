@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                  xmlns:epg="https://github.com/gpor89/jax-ws/cxf/epg/1.0"
+                  name="EpgEndpoint"
+                  targetNamespace="https://github.com/gpor89/jax-ws/cxf/epg/1.0">
+    <wsdl:types>
+        <xs:schema xmlns:tns="https://github.com/gpor89/jax-ws/cxf/epg/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0"
+                   targetNamespace="https://github.com/gpor89/jax-ws/cxf/epg/1.0">
+            <xs:element name="GetEpg" type="tns:GetEpg"/>
+            <xs:element name="GetEpgResponse" type="tns:GetEpgResponse"/>
+            <xs:complexType name="GetEpg">
+                <xs:sequence>
+                    <xs:element name="size" type="xs:integer"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="GetEpgResponse">
+                <xs:sequence>
+                    <xs:element name="epg" type="tns:Epg" minOccurs="0" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="Epg">
+                <xs:sequence>
+                    <xs:element name="idEpg" type="xs:string"/>
+                    <xs:element name="epgTitle" type="xs:string"/>
+                    <xs:element name="originalTitle" type="xs:string"/>
+                    <xs:element name="shortDescription" type="xs:string"/>
+                    <xs:element name="longDescription" type="xs:string"/>
+                    <xs:element name="poster" type="xs:string"/>
+                    <xs:element name="imdbId" type="xs:string"/>
+                    <xs:element name="imdbRating" type="xs:decimal"/>
+                    <xs:element name="director" type="xs:string"/>
+                    <xs:element name="writers" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+                    <xs:element name="stars" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+                    <xs:element name="year" type="xs:integer"/>
+                    <xs:element name="genre" type="xs:string"/>
+                    <xs:element name="ageRestriction" type="xs:string"/>
+                    <xs:element name="playingStart" type="xs:string"/>
+                    <xs:element name="playingEnd" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="GetEpg">
+        <wsdl:part name="parameters" element="epg:GetEpg"/>
+    </wsdl:message>
+    <wsdl:message name="GetEpgResponse">
+        <wsdl:part name="parameters" element="epg:GetEpgResponse"/>
+    </wsdl:message>
+    <wsdl:portType name="EpgEndpoint">
+        <wsdl:operation name="getEpg">
+            <wsdl:input message="epg:GetEpg"/>
+            <wsdl:output message="epg:GetEpgResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="EpgEndpointSOAP" type="epg:EpgEndpoint">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <wsdl:operation name="getEpg">
+            <soap:operation soapAction="https://github.com/gpor89/jax-ws/cxf/epg/1.0/GetEpg"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="EpgEndpoint">
+        <wsdl:port name="EpgEndpointSOAP" binding="epg:EpgEndpointSOAP">
+            <soap:address location="https://gpor89.github.com/soap/EpgEndpoint"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
