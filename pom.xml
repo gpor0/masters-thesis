@@ -23,7 +23,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <kumuluzee.version>3.0.0-SNAPSHOT</kumuluzee.version>
-        <grpc.version>1.13.1</grpc.version>
+        <grpc.version>1.15.0</grpc.version>
         <kumuluzee-logs.version>1.3.0</kumuluzee-logs.version>
     </properties>
 

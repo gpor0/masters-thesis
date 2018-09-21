@@ -10,7 +10,6 @@ import javax.enterprise.event.Observes;
 public class Initializer {
 
     public void init(@Observes @Initialized(ApplicationScoped.class) Object init) {
-        MemCache.load(10000);
     }
 
 }

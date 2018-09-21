@@ -1,24 +1,25 @@
 package com.github.gpor89.masters.data;
 
-import com.github.gpor89.masters.data.model.EpgData;
-
-import java.util.LinkedList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MemCache {
 
-    private static List<EpgData> EPG_DATA_LIST;
+    public static String EPG_ID = "3243546";
+    public static String AGE = "3243546";
+    public static String TITLE = "3243546";
+    public static String GENRE = "3243546";
+    public static String IMDB_ID = "3243546";
+    public static Double IMDB_RATING = Double.parseDouble("5.5");
+    public static String LONG_DESCRIPTION = "3243546";
+    public static String SHORT_DESCRIPTION = "3243546";
+    public static String ORIGINAL_TITLE = "3243546";
+    public static String PLAYING_START = "3243546";
+    public static String PLAYING_END = "3243546";
+    public static String POSTER = "3243546";
+    public static Integer YEAR = 2018;
+    public static List<String> STARS = Arrays.asList("3243546");
+    public static List<String> WRITERS = Arrays.asList("3243546");
+    public static String DIRECTOR = "3243546";
 
-    public static final void load(int size) {
-        EPG_DATA_LIST = new LinkedList<>();
-
-        for (int i = 0; i < size; i++) {
-            EPG_DATA_LIST.add(new EpgData());
-        }
-        System.out.println(EPG_DATA_LIST.size()+" items initialized.");
-    }
-
-    public static List<EpgData> getEpgDataList() {
-        return EPG_DATA_LIST;
-    }
 }

@@ -1,20 +1,22 @@
 package com.github.gpor89.masters.rest;
 
-import com.github.gpor89.masters.data.MemCache;
 import com.github.gpor89.masters.rest.model.EpgItem;
+import com.github.gpor89.masters.rest.model.Status;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.logging.Logger;
+
+import static com.github.gpor89.masters.data.MemCache.*;
 
 @Path("/rest")
 public class EpgResource {
+
+    Logger LOG = Logger.getLogger(EpgResource.class.getName());
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -26,30 +28,91 @@ public class EpgResource {
             size = Long.MAX_VALUE;
         }
 
-        List<EpgItem> result = MemCache.getEpgDataList().stream().limit(size).map(e -> {
+        List<EpgItem> result = new LinkedList<>();
+
+        for (int i = 0; i < size; i++) {
             EpgItem item = new EpgItem();
 
-            item.setIdEpg(e.getIdEpg());
-            item.setAgeRestriction(e.getAgeRestriction());
-            item.setDirector(e.getDirector());
-            item.setEpgTitle(e.getEpgTitle());
-            item.setGenre(e.getGenre().toString());
-            item.setImdbId(e.getImdbId());
-            item.setImdbRating(e.getImdbRating());
-            item.setLongDescription(e.getLongDescription());
-            item.setOriginalTitle(e.getOriginalTitle());
-            item.setPlayingStart(e.getPlayingStart().toString());
-            item.setPlayingEnd(e.getPlayingEnd().toString());
-            item.setPoster(e.getPoster());
-            item.setShortDescription(e.getShortDescription());
-            item.setStars(e.getStars());
-            item.setWriters(e.getWriters());
-            item.setYear(e.getYear());
+            item.setIdEpg(EPG_ID);
+            item.setAgeRestriction(AGE);
+            item.setDirector(DIRECTOR);
+            item.setEpgTitle(TITLE);
+            item.setGenre(GENRE);
+            item.setImdbId(IMDB_ID);
+            item.setImdbRating(IMDB_RATING);
+            item.setLongDescription(LONG_DESCRIPTION);
+            item.setOriginalTitle(ORIGINAL_TITLE);
+            item.setPlayingStart(PLAYING_START);
+            item.setPlayingEnd(PLAYING_END);
+            item.setPoster(POSTER);
+            item.setShortDescription(SHORT_DESCRIPTION);
+            item.setStars(STARS);
+            item.setWriters(WRITERS);
+            item.setYear(YEAR);
 
-            return item;
-        }).collect(Collectors.toList());
-        System.out.print("prepared in " + (new Date().getTime() - s) + " ms");
+            result.add(item);
+        }
+        LOG.info("prepared in " + (new Date().getTime() - s) + " ms");
         return Response.ok(result).build();
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/epg/single")
+    public Response getEpgItem() {
+        long s = new Date().getTime();
+
+        EpgItem item = new EpgItem();
+
+        item.setIdEpg(EPG_ID);
+        item.setAgeRestriction(AGE);
+        item.setDirector(DIRECTOR);
+        item.setEpgTitle(TITLE);
+        item.setGenre(GENRE);
+        item.setImdbId(IMDB_ID);
+        item.setImdbRating(IMDB_RATING);
+        item.setLongDescription(LONG_DESCRIPTION);
+        item.setOriginalTitle(ORIGINAL_TITLE);
+        item.setPlayingStart(PLAYING_START);
+        item.setPlayingEnd(PLAYING_END);
+        item.setPoster(POSTER);
+        item.setShortDescription(SHORT_DESCRIPTION);
+        item.setStars(STARS);
+        item.setWriters(WRITERS);
+        item.setYear(YEAR);
+
+
+        LOG.info("prepared in " + (new Date().getTime() - s) + " ms");
+        return Response.ok(item).build();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/epg")
+    public Response sendEpgList(List<EpgItem> params) {
+        params.size();
+        return Response.ok().build();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/epg/single")
+    public Response sendEpg(EpgItem i) {
+        i.getIdEpg();
+        return Response.ok().build();
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/ping")
+    public Response ping() {
+
+        Status s = new Status();
+        s.setX(1);
+
+        return Response.ok(s).build();
     }
 
 }

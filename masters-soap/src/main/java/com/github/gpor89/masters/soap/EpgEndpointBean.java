@@ -1,19 +1,16 @@
 package com.github.gpor89.masters.soap;
 
-import com.github.gpor89.masters.data.MemCache;
-import com.github.gpor89.masters.data.model.EpgData;
 import com.kumuluz.ee.jaxws.cxf.annotations.WsContext;
-import https.github_com.gpor89.jax_ws.cxf.epg._1.Epg;
-import https.github_com.gpor89.jax_ws.cxf.epg._1.EpgEndpoint;
-import https.github_com.gpor89.jax_ws.cxf.epg._1.GetEpg;
-import https.github_com.gpor89.jax_ws.cxf.epg._1.GetEpgResponse;
+import https.github_com.gpor89.jax_ws.cxf.epg._1.*;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.jws.WebService;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static com.github.gpor89.masters.data.MemCache.*;
 
 @WsContext(contextRoot = "/soap", urlPattern = "/epg/1.0")
 @ApplicationScoped
@@ -22,36 +19,80 @@ import java.util.stream.Collectors;
 public class EpgEndpointBean implements EpgEndpoint {
 
     @Override
-    public GetEpgResponse getEpg(GetEpg parameters) {
+    public GetEpgListResponse getEpgList(GetEpgList parameters) {
+        List<Epg> list = new LinkedList<>();
+        for (int i = 0; i < parameters.getSize().longValue(); i++) {
+            Epg epg = new Epg();
 
-        GetEpgResponse response = new GetEpgResponse();
+            epg.setIdEpg(EPG_ID);
+            epg.setEpgTitle(TITLE);
+            epg.setDirector(DIRECTOR);
+            epg.setGenre(GENRE);
+            epg.setImdbId(IMDB_ID);
+            epg.setImdbRating(BigDecimal.valueOf(IMDB_RATING));
+            epg.setLongDescription(LONG_DESCRIPTION);
+            epg.setOriginalTitle(ORIGINAL_TITLE);
+            epg.setPlayingStart(PLAYING_START);
+            epg.setPlayingEnd(PLAYING_END);
+            epg.setPoster(POSTER);
+            epg.setShortDescription(SHORT_DESCRIPTION);
+            epg.setYear(BigInteger.valueOf(YEAR));
+            epg.setAgeRestriction(AGE);
+            epg.getWriters().addAll(WRITERS);
+            epg.getStars().addAll(STARS);
 
-        List<EpgData> epgDataList = MemCache.getEpgDataList();
+            list.add(epg);
+        }
 
-        response.getEpg().addAll(
-                epgDataList.stream().limit(parameters.getSize().longValue()).map(e -> {
-                    Epg epg = new Epg();
+        GetEpgListResponse response = new GetEpgListResponse();
 
-                    epg.setIdEpg(e.getIdEpg());
-                    epg.setEpgTitle(e.getEpgTitle());
-                    epg.setDirector(e.getDirector());
-                    epg.setGenre(e.getGenre().toString());
-                    epg.setImdbId(e.getImdbId());
-                    epg.setImdbRating(BigDecimal.valueOf(e.getImdbRating()));
-                    epg.setLongDescription(e.getLongDescription());
-                    epg.setOriginalTitle(e.getOriginalTitle());
-                    epg.setPlayingStart(e.getPlayingStart().toString());
-                    epg.setPlayingEnd(e.getPlayingEnd().toString());
-                    epg.setPoster(e.getPoster());
-                    epg.setShortDescription(e.getShortDescription());
-                    epg.setYear(BigInteger.valueOf(e.getYear()));
-                    epg.setAgeRestriction(e.getAgeRestriction());
-                    epg.getWriters().addAll(e.getWriters());
-                    epg.getStars().addAll(e.getStars());
-
-                    return epg;
-                }).collect(Collectors.toList()));
+        response.getEpg().addAll(list);
 
         return response;
     }
+
+    @Override
+    public Pong ping(Empty parameters) {
+        Pong pong = new Pong();
+        pong.setX(BigInteger.ONE);
+        return pong;
+    }
+
+    @Override
+    public Epg getEpg(Empty parameters) {
+
+        Epg epg = new Epg();
+
+        epg.setIdEpg(EPG_ID);
+        epg.setEpgTitle(TITLE);
+        epg.setDirector(DIRECTOR);
+        epg.setGenre(GENRE);
+        epg.setImdbId(IMDB_ID);
+        epg.setImdbRating(BigDecimal.valueOf(IMDB_RATING));
+        epg.setLongDescription(LONG_DESCRIPTION);
+        epg.setOriginalTitle(ORIGINAL_TITLE);
+        epg.setPlayingStart(PLAYING_START);
+        epg.setPlayingEnd(PLAYING_END);
+        epg.setPoster(POSTER);
+        epg.setShortDescription(SHORT_DESCRIPTION);
+        epg.setYear(BigInteger.valueOf(YEAR));
+        epg.setAgeRestriction(AGE);
+        epg.getWriters().addAll(WRITERS);
+        epg.getStars().addAll(STARS);
+
+        return epg;
+    }
+
+    @Override
+    public Empty sendEpg(Epg parameters) {
+        parameters.getStars();
+        return new Empty();
+    }
+
+    @Override
+    public Empty sendEpgList(GetEpgListResponse parameters) {
+        parameters.getEpg();
+        return new Empty();
+    }
+
 }

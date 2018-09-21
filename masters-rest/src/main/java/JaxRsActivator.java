@@ -1,4 +1,6 @@
 import com.github.gpor89.masters.data.MemCache;
+import com.github.gpor89.masters.rest.ReadInterceptor;
+import com.github.gpor89.masters.rest.WriteInterceptor;
 import com.kumuluz.ee.logs.LogManager;
 import com.kumuluz.ee.logs.Logger;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -13,6 +15,7 @@ public class JaxRsActivator extends ResourceConfig {
     public JaxRsActivator() {
         // Register resources and providers using package-scanning.
         packages("com.github.gpor89.masters.rest");
-        MemCache.load(10000);
+        register(ReadInterceptor.class);
+        register(WriteInterceptor.class);
     }
 }

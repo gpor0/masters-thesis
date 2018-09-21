@@ -8,14 +8,25 @@
     <wsdl:types>
         <xs:schema xmlns:tns="https://github.com/gpor89/jax-ws/cxf/epg/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0"
                    targetNamespace="https://github.com/gpor89/jax-ws/cxf/epg/1.0">
-            <xs:element name="GetEpg" type="tns:GetEpg"/>
-            <xs:element name="GetEpgResponse" type="tns:GetEpgResponse"/>
-            <xs:complexType name="GetEpg">
+            <xs:element name="E" type="tns:Empty" />
+            <xs:element name="GetEpgList" type="tns:GetEpgList"/>
+            <xs:element name="GetEpgListResponse" type="tns:GetEpgListResponse"/>
+            <xs:element name="GetEpg" type="tns:Empty"/>
+            <xs:element name="Epg" type="tns:Epg"/>
+            <xs:element name="Pong" type="tns:Pong"/>
+            <xs:complexType name="Empty">
+            </xs:complexType>
+            <xs:complexType name="Pong">
+                <xs:sequence>
+                    <xs:element name="x" type="xs:integer"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="GetEpgList">
                 <xs:sequence>
                     <xs:element name="size" type="xs:integer"/>
                 </xs:sequence>
             </xs:complexType>
-            <xs:complexType name="GetEpgResponse">
+            <xs:complexType name="GetEpgListResponse">
                 <xs:sequence>
                     <xs:element name="epg" type="tns:Epg" minOccurs="0" maxOccurs="unbounded"/>
                 </xs:sequence>
@@ -42,22 +53,98 @@
             </xs:complexType>
         </xs:schema>
     </wsdl:types>
+    <wsdl:message name="E">
+        <wsdl:part name="parameters" element="epg:E"/>
+    </wsdl:message>
+    <wsdl:message name="GetEpgList">
+        <wsdl:part name="parameters" element="epg:GetEpgList"/>
+    </wsdl:message>
+    <wsdl:message name="GetEpgListResponse">
+        <wsdl:part name="parameters" element="epg:GetEpgListResponse"/>
+    </wsdl:message>
     <wsdl:message name="GetEpg">
         <wsdl:part name="parameters" element="epg:GetEpg"/>
     </wsdl:message>
     <wsdl:message name="GetEpgResponse">
-        <wsdl:part name="parameters" element="epg:GetEpgResponse"/>
+        <wsdl:part name="parameters" element="epg:Epg"/>
+    </wsdl:message>
+    <wsdl:message name="SendEpg">
+        <wsdl:part name="parameters" element="epg:Epg"/>
+    </wsdl:message>
+    <wsdl:message name="SendEpgResponse">
+        <wsdl:part name="parameters" element="epg:E"/>
+    </wsdl:message>
+    <wsdl:message name="SendEpgList">
+        <wsdl:part name="parameters" element="epg:GetEpgListResponse"/>
+    </wsdl:message>
+    <wsdl:message name="SendEpgListResponse">
+        <wsdl:part name="parameters" element="epg:E"/>
+    </wsdl:message>
+    <wsdl:message name="Pong">
+        <wsdl:part name="parameters" element="epg:Pong"/>
     </wsdl:message>
     <wsdl:portType name="EpgEndpoint">
+        <wsdl:operation name="getEpgList">
+            <wsdl:input message="epg:GetEpgList"/>
+            <wsdl:output message="epg:GetEpgListResponse"/>
+        </wsdl:operation>
         <wsdl:operation name="getEpg">
             <wsdl:input message="epg:GetEpg"/>
             <wsdl:output message="epg:GetEpgResponse"/>
         </wsdl:operation>
+        <wsdl:operation name="sendEpg">
+            <wsdl:input message="epg:SendEpg"/>
+            <wsdl:output message="epg:SendEpgResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="sendEpgList">
+            <wsdl:input message="epg:SendEpgList"/>
+            <wsdl:output message="epg:SendEpgListResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="ping">
+            <wsdl:input message="epg:E"/>
+            <wsdl:output message="epg:Pong"/>
+        </wsdl:operation>
     </wsdl:portType>
     <wsdl:binding name="EpgEndpointSOAP" type="epg:EpgEndpoint">
         <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <wsdl:operation name="getEpgList">
+            <soap:operation soapAction="https://github.com/gpor89/jax-ws/cxf/epg/1.0/GetEpgList"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
         <wsdl:operation name="getEpg">
             <soap:operation soapAction="https://github.com/gpor89/jax-ws/cxf/epg/1.0/GetEpg"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="sendEpg">
+            <soap:operation soapAction="https://github.com/gpor89/jax-ws/cxf/epg/1.0/SendEpg"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="sendEpgList">
+            <soap:operation soapAction="https://github.com/gpor89/jax-ws/cxf/epg/1.0/SendEpgList"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ping">
+            <soap:operation soapAction="https://github.com/gpor89/jax-ws/cxf/epg/1.0/ping"/>
             <wsdl:input>
                 <soap:body use="literal"/>
             </wsdl:input>

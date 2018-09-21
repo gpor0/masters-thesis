@@ -2,13 +2,30 @@ syntax = "proto3";
 option java_package = "grpc";
 
 service Epg {
-    rpc getEpg (EpgRequest) returns (EpgResponse) {
+
+    rpc ping (X) returns (X) {
     };
+
+    rpc getEpgItem (EpgRequest) returns (EpgItem) {
+    };
+
+    rpc getEpgList (EpgRequest) returns (EpgResponse) {
+    };
+
+    rpc sendEpgItem (EpgItem) returns (X) {
+    };
+
+    rpc sendEpgList (EpgResponse) returns (X) {
+    };
+
+    rpc getEpgStream (EpgRequest) returns (stream EpgItem) {
+    };
+
+
 }
 
-service EpgStream {
-    rpc getEpgStream (EpgRequest) returns (stream EpgResponse) {
-    };
+message X {
+    int32 n = 1;
 }
 
 message EpgRequest {
